@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>左右切换</title>
+</head>
+<script src="../public/js/jquery.js"></script>
+<style>
+	*{
+		margin:0;
+		padding: 0;
+	}
+	#box{
+		width: 1000px;
+		height:600px;
+		margin:50px auto;
+		border:1px solid red;
+	}
+	#box ul{
+		margin-left:0px;
+	}
+	#box ul li{
+		list-style: none;
+		float:left;
+		width:300px;
+		height:500px;
+		border:1px solid black;
+		margin:50px 15px;
+		opacity: 0;
+	}
+	#box ul li:nth-child(2){
+		height:300px;
+		border:1px solid red;
+		margin-top:150px;
+		opacity: 1;
+	}
+	.btn-two{
+		width:300px;
+		height:50px;
+		border:1px solid blue;
+		margin-top:250px;
+	}
+	.btn-two input{
+		width:50px;
+		height:20px;
+		margin-left:60px;
+		cursor: pointer;
+	}
+</style>
+<body>
+	<div id="box">
+		<ul>
+			<li>一</li>
+			<li>
+				<div class="btn-two">
+					<input id="user" type="button" value="用户">
+					<input id="business" type="button" value="商家">
+				</div>
+			</li>
+			<li>三</li>
+		</ul>		
+	</div>
+</body>
+<script>
+
+$("#user").click(function(){
+	$("#box ul").animate({
+		"margin-left":"315px"
+	},500);
+	$("#box ul li").eq(1).animate({
+		"opacity":"0"
+	},500);
+	$("#box ul li").eq(0).animate({
+		"opacity":"1"
+	},500);
+
+})
+
+$("#business").click(function(){
+	$("#box ul").animate({
+		"margin-left":"-315px"
+	},500);
+	$("#box ul li").eq(1).animate({
+		"opacity":"0"
+	},500);
+	$("#box ul li").eq(2).animate({
+		"opacity":"1"
+	},500);
+
+})
+// $("#box ul li").click(function(){
+// 	$("#box ul").animate({
+// 		"margin-left":"0px"
+// 	},500);
+// 	$("#box ul li").eq(1).animate({
+// 		"opacity":"1"
+// 	},500);
+// 	$("#box ul li").eq(2).animate({
+// 		"opacity":"0"
+// 	},500);
+// 	$("#box ul li").eq(0).animate({
+// 		"opacity":"0"
+// 	},500);
+
+// })
+// $("ul li").click(function(){
+// 	var index=$(this).index();
+// 	alert(index);
+// });	
+</script>
+ 
+</html>

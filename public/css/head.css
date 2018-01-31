@@ -1,0 +1,58 @@
+		.top{
+			width:100%;
+			height:auto;
+			background:#222;
+			border:1px solid #222;
+			opacity:1;
+
+		}
+		.navbar{
+			/*background:rgb(13,13,13);*/		
+			margin:10px auto;
+
+		}
+		.navbar-default {
+			border:0px solid #f8f8f8;
+		}
+		.navbar-inverse{
+			border:0px solid #222;
+			
+		}
+		.navbar-header{
+			margin-left:10%;
+		}
+		.navbar-toggle{
+			margin-right:10%;
+		}
+		.navbar-inverse:after{
+			content: "";
+			width:85%;
+			background:#fff;
+			height:2px;
+			margin:0 auto;
+		}
+		.nav{
+			margin-left:20px;
+		}
+		.navbar-right {
+			margin-right:10%;
+		}
+		*{
+			margin:0;
+			padding:0;
+		}
+		#user{
+			margin-right:10%;
+			color:#fff;			
+		}
+		#user_username{
+			line-height: 30px;
+			margin-top:11px;
+
+		}
+		#user{
+			display: none;
+		}
+		#lr{
+			display:block;
+		}

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+html(lang="en")
+head
+	meta(charset="UTF-8")
+	title YA.有间文具店
+	style.
+		.center{
+			width:100%;
+			height:500px;
+			background:#222;
+			margin-top:0px;
+			border:1px solid #222; 
+			text-align:center;
+		}
+		.center .msg_show{
+			margin-top:10%;
+			color:rgb(240,240,240)
+		}
+		.box{
+			width：100%;
+			height:auto;
+			background:#222;
+		}
+		.word{
+			position:absolute;
+			bottom:30px;
+			width:100%;
+			height:50px;
+			color:rgb(240,240,240);
+			text-align:center;
+			font-size:20px;
+			font-family:"微软雅黑";
+			opacity:0;
+		}
+		.bottom{
+			background:#222;
+			color:#fff;
+			font-size:18px;
+			text-align:center;
+		}
+body
+	include include/head
+	div.center
+		div.msg_show
+			h1(data-scroll-reveal="enter top and then ease 30px after 0.4s over 1s") 欢迎来到 YA.有间文具店 ^_^
+			p(data-scroll-reveal="enter right and then ease 30px after 0.6s over 1s") Welcome to YA
+			p(data-scroll-reveal="enter bottom and then ease 40px after 0.8s over 1s") But I can't help falling in love with you
+	div.box
+		div.container
+			div.row
+				div.col-md-4(class="hover_show" data-scroll-reveal="enter left and then ease 40px after 0.5s over 1s")
+					a(href="/goods?type=pen" class="thumbnail")
+						img(src="/images/1.jpg")
+						div.word 持笔
+				div.col-md-4(class="hover_show" data-scroll-reveal="enter bottom and then ease 40px after 0.6s over 1s")
+					a(href="/goods?type=noteBook" class="thumbnail")
+						img(src="/images/2.jpg")
+						div.word 书写
+				div.col-md-4(class="hover_show" data-scroll-reveal="enter right and then ease 40px after 0.7s over 1s")
+					a(href="/goods?type=other" class="thumbnail")
+						img(src="/images/3.jpg")
+						div.word 其他
+	div.bottom
+		p 电子商务实验网站
+		p 陈传文&翟旭艳   个人原创 请自行参考
+	script.
+		window.scrollReveal=new scrollReveal();
+		$(".hover_show").hover(function(){
+			$(this).find(".word").animate({
+				"opacity":"1"
+			},500)
+		},function(){
+			$(this).find(".word").animate({
+				"opacity":"0"
+			},500)			
+		});
+		//- var url=window.location.href;
+		//- var cc=url.indexOf("/");
+		//- (function(){
+		//- 	history.pushState(null,null,cc);
+		//- })()
+
+
+	

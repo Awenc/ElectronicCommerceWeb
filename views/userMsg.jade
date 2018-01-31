@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+html(lang="en")
+head
+	meta(charset="UTF-8")
+	title Document
+	style.
+		body{
+			overflow:hidden;
+		}
+		#center{
+			position:absolute;
+			width:100%;
+			height:600px;
+			z-index:5;
+			background:rgb(140,140,140);
+		}
+		#center .center_left{
+			float:left;
+			width:40%;
+			height:100%;
+		}
+		#center .center_right{
+			float:left;
+			position:relative;
+			width:60%;
+			height:100%;
+		}
+		#center .center_right:after{
+			content:"";
+			position:absolute;
+			width:2px;
+			height:500px;
+			background:black;
+			top:40px;
+			left:-60px;
+		}
+		#center .center_left .tag{
+			width:300px;
+			height:400px;
+			margin:10% auto;
+			text-align:center;
+		}
+		#center .center_left .tag h4{
+			margin-top:15px;
+			color:#000;
+		}
+		#center .center_left .tag .sort{
+			margin-top:30px;
+		}
+		#center .center_left .tag .sort ul li{
+			list-style:none;
+			margin-left:30px;
+			width:80%;
+			height:40px;
+			border:1px solid #fff;
+			margin-top:5px;
+			font-size:15px;
+			line-height:40px;
+			font-family:"微软雅黑";
+			border-radius:5px;
+			cursor:pointer;
+			background:rgb(12,155,156);
+			color:rgb(170,255,255);
+		}
+		#center .center_left .tag .sort ul li:hover{
+			background:rgb(156,46,12);
+			color:rgb(255,190,170);
+		}
+		#center .center_right .user_show,#center .center_right .order_show{
+			position:absolute;
+			width:600px;
+			height:500px;
+			top:10%;
+			left:5%;
+			z-index:10;
+		}
+		#center .center_right .order_show{
+			opacity:0;
+			z-index:5;
+		}
+		#center .center_right .order_show .title{
+			width:100%;
+			height:35px;
+			border-bottom:2px solid rgb(12,12,12);
+		}
+		#center .center_right .order_show .title ul li,#center .center_right .order_show .detail ul li div{
+			list-style:none;
+			float:left;
+			width:70px;
+			height:35px;
+			font-size:16px;
+			margin-left:12%;
+			text-align:center;
+		}
+		#center .center_right .order_show .detail ul li{
+			list-style:none;
+			font-size:14px;
+			width:100%;
+			height:30px;
+			line-height:30px;
+			margin-top:10px;
+			border-bottom:1px solid #fff;			
+		}
+		#center .center_right .order_show .detail ul li div.morebtn{
+			width:100px;
+			height:40px;
+			font-size:15px;
+			cursor:pointer;
+		}
+		#center .center_right .order_show .detail ul li div.more{
+			width:100%;
+			height:30px;
+			border:1px solid black;
+			margin-top:5px;
+		}
+		#center .center_right .user_show ul li{
+			list-style:none;
+			margin-top:15px;
+			font-family:"微软雅黑";
+			font-size:20px;
+			line-height:50px;
+		}
+		#center .center_right .user_show ul li div{
+			width:100%;
+			height:50px;
+
+		}
+		#center .center_right .user_show ul li div .txt{
+			color:#000;
+		}
+		#center .center_right .user_show ul li div #changMsg{
+			width:100px;
+			height:40px;
+			font-size:15px;
+			line-height:40px;
+			background:#222;
+			color:grey;
+			text-align:center;
+			border-radius:5px;
+			cursor:pointer;
+		}
+		#center .center_right .user_show ul li div #changMsg:hover{
+			color:#fff;
+		}
+		#changUserMsg{
+			position:absolute;
+			width:400px;
+			height:400px;
+			border:1px solid #fff;
+			border-radius:5px;
+			z-index:20;
+			top:8%;
+			left:35%;
+			background:rgba(140,140,140,.9);
+			display:none;
+		}
+		#changUserMsg .title{
+			font-size:20px;
+			text-align:center;
+		}
+		#changUserMsg input{
+			margin-top:15px;
+			margin-left:60px;
+		}
+		input.text{
+			width:270px;
+			height:42px;
+			color:#fff;
+			background:rgba(45,45,45,0.15);
+			border-radius:6px;
+			border:1px solid rgba(255,255,255,.15);
+			box-shadow:0 2px 3px 0 rgba(0,0,0,.1) inset;
+			text-indent:10px;
+		}
+		input.btn{
+			width:270px;
+			height:40px;
+		}
+		#back{
+			background:rgb(13,127,156);
+			color:rgb(170,238,255);
+		}
+		#change{
+			background:rgb(156,46,12);
+			color:rgb(255,190,170);		
+		}
+		input:focus{
+			outline:none;
+			box-shadow:0 2px 3px 0 rgba(0,0,0,.1) inset,0 2px 7px 0 rgba(0,0,0,.2);
+		}
+		input::-webkit-input-placeholder{color:#fff}
+		#showShopGoods{
+			position:absolute;
+			width:400px;
+			height:400px;
+			background:#fff;
+			top:15%;
+			left:35%;
+			opacity:1;
+			z-index:10;
+			border-radius:6px;
+			box-shadow:0 0 15px rgb(200,200,200);
+			display:none;
+		}
+		#showShopGoods .goodsmsg{
+			width:100%;
+			height:30px;
+			border-bottom:1px solid grey;
+		}
+		#showShopGoods .goodsmsg ul li{
+			float:left;
+			list-style:none;
+			margin-left:70px;
+		}
+		#showShopGoods .goodsmsg ul li:nth-child(3){
+			margin-left:100px;
+		}
+		#showShopGoods .goodsshow ul li{
+			list-style:none;
+			width:100%;
+			height:40px;
+			border-bottom:1px solid grey;
+		}
+		#showShopGoods .goodsshow ul li img{
+			width:35px;
+			height:35px;
+			float:left;
+			margin-left:70px;
+		}
+		#showShopGoods .goodsshow ul li .goods_name,#showShopGoods .goodsshow ul li .goods_price{
+			width:90px;
+			float:left;
+			margin-left:50px;
+			font-size:15px;
+			line-height:35px;			
+		}
+		#showShopGoods .goodsshow .closeBtn{
+			width:100%;
+			height:40px;
+			border-radius:6px;
+			position:absolute;
+			bottom:0;
+			background:red;
+			color:#fff;
+			text-align:center;
+			font-size:16px;
+			line-height:40px;
+			cursor:pointer;
+		}
+body
+	include include/head
+	div#center
+		div.center_left
+			div.tag
+				h4 欢迎#{usermsg.username}
+				div.sort
+					ul
+						li#myMsg 我的信息
+						li#myOrder 我的订单
+		div.center_right
+			div.user_show
+				ul
+					li
+						div
+							span 账号：
+							span.txt #{usermsg.username}
+					li
+						div
+							span 昵称：
+							span.txt #{usermsg.nickname}
+					li
+						div
+							span 性别：
+							span.txt #{usermsg.sex}
+					li
+						div
+							span 年龄：
+							span.txt #{usermsg.age}
+					li
+						div
+							span 联系方式：
+							span.txt #{usermsg.tel}
+					li
+						div
+							div#changMsg 修改信息
+			div.order_show
+				div.title
+					ul
+						li 订单编号
+						li 总价格
+						li 状态
+				div.detail
+					ul
+		div#changUserMsg
+			form(action="/userMsg/changeUser" method="post")
+				div.title 修改信息
+				input(class="text move" name="nickname" type="text" placeholder="昵称" value="#{usermsg.nickname}")
+				input(class="text move" name="sex" type="text" placeholder="性别" value="#{usermsg.sex}")
+				input(class="text move" name="age" type="text" placeholder="年龄" value="#{usermsg.age}")
+				input(class="text move" name="tel" type="text" placeholder="联系方式" value="#{usermsg.tel}")
+				input(type="submit" class="btn" id="change" value="修改")
+				input(type="button" class="btn" id="back" value="取消")
+		div#showShopGoods
+			div.goodsmsg
+				ul
+					li 图片
+					li 名称
+					li 价格
+			div.goodsshow
+				ul
+				div.closeBtn 确定
+	script.
+		(function(){
+			console.log($("#type").html())
+			if($("#type").html() == 1){
+				load();
+			}else if($("#type").html() == 2){
+				Reg();				
+			}
+
+		})()
+		$("#myMsg").click(function(){
+			$(".user_show").animate({
+				"opacity":1,
+				"z-index":10
+			},500);
+			$(".order_show").animate({
+				"opacity":0,
+				"z-index":5
+			})
+		});
+		$("#myOrder").click(function(){
+			$(".order_show").animate({
+				"opacity":1,
+				"z-index":10
+			},500);
+			$(".user_show").animate({
+				"opacity":0,
+				"z-index":5
+			})
+		//- 获取该用户的订单详情
+		     $("#center .center_right .order_show .detail ul").html("");
+		     $.ajax({
+		         
+		         type: "Get",
+		         url: "/shopCar/findALLOrder",    //这是传输到哪个地方进行处理
+		         contentType: "application/json; charset=utf-8",   //传输方式
+		         data: {'type':"1"},  //这是传输的参数
+		         dataType: "json",   //传输的格式是json
+		         success: function (data) {    //成功后的回调函数
+		             //- console.log(data);  
+		             var json = data.result; //解析JSON$.parseJSON(data.goods);
+		             var show = "";
+		             console.log(json);
+		             $.each(json, function (index, item) { //循环获取数据   
+		             	 var id=json[index].orderid;
+		             	 var sumprice=json[index].sumprice;
+		             	 var status=json[index].status;            
+		                 //console.log(sex + ":" + level + ":" + SongName + ":" + songpath);
+		                 show += "<li orderid="+id+"><div class='order_id'>"+id+"</div><div class='order_price'>￥"+sumprice+"</div><div class='order_status'>"+status+"</div><div class='morebtn'>查看详情</div></li>";  //将数据写入到页面中
+		             });
+		             $("#center .center_right .order_show .detail ul").html(show);
+		         },
+		         error: function (err) {
+		             alert("错误信息");
+		         }
+
+		     });			
+		});
+		$("#back").click(function(){
+			$("#changUserMsg").css({
+				"display":"none",
+			});
+		});
+		$("#changMsg").click(function(){
+			$("#changUserMsg").css({
+				"display":"block",
+			});		
+		});
+		
+		//- 点击查看详情
+		$("#center .center_right .order_show .detail ul").on("click","li .morebtn",function(){
+			//- var length= json.length;
+			$("#showShopGoods").css("display","block");
+		     $.ajax({
+		         
+		         type: "Get",
+		         url: "/shopCar/findALLOrderGoods",    //这是传输到哪个地方进行处理
+		         contentType: "application/json; charset=utf-8",   //传输方式
+		         data: {'type':$(this).parent().attr("orderid")},  //这是传输的参数
+		         dataType: "json",   //传输的格式是json
+		         success: function (data) {    //成功后的回调函数
+		             //- console.log(data);  
+		             var json = data.result; //解析JSON$.parseJSON(data.goods);
+		             var show = "";
+		             console.log(json);
+		             $.each(json, function (index, item) { //循环获取数据   
+		             	 var img=json[index].goods_img;
+		             	 var name=json[index].goods_name;
+		             	 var price=json[index].goods_price;            
+		                 //console.log(sex + ":" + level + ":" + SongName + ":" + songpath);
+		                 show +="<li><img src="+img+"><div class='goods_name'>"+name+"</div><div class='goods_price'>"+price+"</div></li>";  //将数据写入到页面中
+		             });
+		             $("#showShopGoods .goodsshow ul").html(show);
+		         },
+		         error: function (err) {
+		             alert("错误信息");
+		         }
+
+		     });
+		})
+		$("#showShopGoods .goodsshow .closeBtn").click(function(){
+			$("#showShopGoods").css("display","none");
+		});

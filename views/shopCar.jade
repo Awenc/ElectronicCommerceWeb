@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+html(lang="en")
+head
+	meta(charset="UTF-8")
+	title Document
+	style.
+		.title{
+			width:80%;
+			height:40px;
+			font-size:18px;
+			margin-top:20px;
+			margin-left:10%;
+			line-height:40px;
+			border-bottom:2px solid black;
+		}
+		.goods_show{
+			width:80%;
+			margin-left:10%;
+			height:auto;
+		}
+		.goods_show .detail ul li{
+			list-style:none;
+			width:100%;
+			height:50px;
+			border-bottom:1px solid rgb(240,240,240);
+			margin-top:10px;
+		}
+		.goods_show .lei{
+			width:100%;
+			height:50px;
+			margin-top:10px;
+			border-bottom:1px solid rgb(240,240,240);
+		}
+		.goods_show .lei ul li{
+			float:left;
+			display:block;
+			list-style:none;
+			width:100px;
+			height:50px;
+			font-size:20px;
+			line-height:50px;
+			text-align:center;
+			margin-left:13%;
+			color:rgb(140,140,140);
+		}
+
+		.goods_show ul li img{
+			float:left;
+			width:40px;
+			height:40px;
+			margin-left:17%;
+		}
+		.goods_show ul li div{
+			float:left;
+			width:100px;
+			height:50px;
+			margin-left:17%;
+			font-size:18px;
+			line-height:50px;
+		}
+		.goods_show ul li div.goods_price{
+			margin-left:16%;
+		}
+		.goods_show ul li .del{
+			width:60px;
+			height:30px;
+			font-size:18px;
+			border:1px solid red;
+			border-radius:6px;
+			margin-left :15%;
+			margin-top:4px;
+			background:red;
+			color:rgb(255,190,170);
+		}
+		.buy{
+			width:100%;
+			height:auto;
+		}
+		.buy div{
+			margin-left:38%;
+			width:270px;
+			height:40px;
+			text-align:center;
+			line-height:40px;
+			margin-top:20px;			
+		}
+		.buy .sumPrice{
+			margin-left:44%;
+		}
+		.buy .sumPrice ul li{
+			list-style:none;q
+			font-size:18px;
+			float:left;
+		}
+		.buy .sumPrice ul li.sum{
+			font-size:20px;
+			color:red;
+		}
+		#buyBtn{
+			border-radius:6px;
+			border:1px solid grey;
+			background:rgb(12,156,127);
+			color:rgb(170,255,238);
+			cursor:pointer;
+		}
+body
+	include include/head
+	div.title #{username}的购物车
+	div.goods_show
+		div.lei
+			ul
+				li 图片
+				li 商品名
+				li 价格
+				li 选项
+		div.detail
+			ul
+		div.buy
+			div.sumPrice
+				ul
+					li 总价格
+					li.sum 00000
+			div#buyBtn 点击支付
+	script.
+		ajaxToType();
+		function ajaxToType() {
+		     $(".goods_show .detail ul").html("");
+		     $.ajax({
+		         
+		         type: "post",
+		         url: "/shopCar/getAll",    //这是传输到哪个地方进行处理
+		         contentType: "application/json; charset=utf-8",   //传输方式
+		         data: {'type':1},  //这是传输的参数
+		         dataType: "json",   //传输的格式是json
+		         success: function (data) {    //成功后的回调函数
+		             //- console.log(data);  
+		             var json = data.allGoods; //解析JSON$.parseJSON(data.goods); 
+		             var show = "";
+		             var sumPrice=0;
+		             //- console.log(json);
+		             $.each(json, function (index, item) { //循环获取数据   
+		             	 var id=json[index].goods_id;
+		                 var img = json[index].goods_img;
+		                 //- console.log(img); 
+		                 var name = json[index].goods_name;
+		                 //- var msg = json[index].goods_msg;
+		                 var price = json[index].goods_price;
+		                 sumPrice +=price;	
+		                 var shopCar_id=json[index].shopcar_id;              
+		                 //console.log(sex + ":" + level + ":" + SongName + ":" + songpath);
+		                 show += "<li goods_id="+id+" shopCarID="+shopCar_id+"><img src='"+img+"'/><div class='goods_name'>"+name+"</div><div class='goods_price'>"+price+"</div><button class='del'>删除</button></li>";  //将数据写入到页面中
+		             });
+		             $(".goods_show .detail ul").html(show);
+		             $(".buy .sumPrice ul li.sum").html("￥"+sumPrice);
+		             sumprice=sumPrice;
+		         },
+		         error: function (err) {
+		             alert("错误信息");
+		         }
+
+		     });
+		 }
+		//- 删除购物车 中商品的异步操作
+		var sumprice=0;
+		$(".goods_show .detail ul").on("click","li button",function(){
+			var goods_id=$(this).parent().attr("goods_id");
+			var shopCar_id=$(this).parent().attr("shopCarID");
+			var $oL=$(this);
+		     $.ajax({	         
+		         type: "get",
+		         url: "/shopCar/delGoods",    //这是传输到哪个地方进行处理
+		         contentType: "application/json; charset=utf-8",   //传输方式
+		         data: {'goods_id':goods_id,"shopCar_id":shopCar_id},  //这是传输的参数
+		         dataType: "json",   //传输的格式是json
+		         success: function (data) {    //成功后的回调函数
+		             //- console.log(data);  
+		             var error = data.error; //解析JSON$.parseJSON(data.goods); 
+					 if(error==0){
+					 	alert("删除成功");
+					 	$oL.parent().remove();
+					 	var sum=0;
+					 	for(var i=0;i<$(".detail ul").children().length;i++){
+							sum +=parseInt($(".detail ul li").eq(i).find(".goods_price").html()) ;
+					 	};
+					 	sumprice=sum;
+					 	$(".buy .sumPrice ul li.sum").html("￥"+sum);
+					 }else if(error==1){
+					 	alert("删除失败");
+					 }
+		         },
+		         error: function (err) {
+		             alert("错误信息");
+		         }
+
+		     });
+		});
+
+		//- 点击购买的操作
+		$("#buyBtn").click(function(){
+		     $.ajax({	         
+		         type: "get",
+		         url: "/shopCar/buyGoods",    //这是传输到哪个地方进行处理
+		         contentType: "application/json; charset=utf-8",   //传输方式
+		         data: {'sumprice':sumprice},  //这是传输的参数
+		         dataType: "json",   //传输的格式是json
+		         success: function (data) {    //成功后的回调函数
+		             //- console.log(data);  
+		             var error = data.error; //解析JSON$.parseJSON(data.goods); 
+					 if(error==0){
+					 	alert("购买成功");
+					 	window.location.href='/shopCar';
+					 }else if(error==1){
+					 	alert("购买失败");
+					 	window.location.href='/shopCar';
+					 }
+		         },
+		         error: function (err) {
+		             alert("错误信息");
+		         }
+
+		     });			
+		});

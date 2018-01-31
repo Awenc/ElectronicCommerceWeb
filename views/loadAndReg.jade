@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+html(lang="en")
+head
+	meta(charset="UTF-8")
+	title 登录与注册
+	style.
+		body{
+			overflow:hidden;
+		}
+		#bg_wrap{
+			position:absolute;
+			width:100%;
+			height:100%;
+			left:0;
+			top:74px;
+			overflow:hidden;
+			z-index:1;
+		}
+		#bg_wrap div{
+			width:100%;
+			height:100%;
+			position:absolute;
+			left:0;
+			top:0;
+			opacity:0;
+			transition:opacity 2s;
+		}
+		#bg_wrap div:nth-of-type(1){
+			opacity:1;
+		}
+		#login,#Reg{
+			position:absolute;
+			width:272px;
+			height:300px;
+			top:30%;
+			left:40%;
+			z-index:10;
+		}
+		.move{
+			margin-top:20px;
+		}
+		h3{
+			font-size:30px;
+			font-weight:700;
+			color:#fff;
+			font-famliy:"微软雅黑";
+			text-align:center;
+			margin-bottom:30px;
+			cursor:move;
+		}
+		input.text{
+			width:270px;
+			height:42px;
+			color:#fff;
+			background:rgba(45,45,45,0.15);
+			border-radius:6px;
+			border:1px solid rgba(255,255,255,.15);
+			box-shadow:0 2px 3px 0 rgba(0,0,0,.1) inset;
+			text-indent:10px;
+		}
+		input.btn{		
+			width:272px;
+			height:44px;
+			box-shadow:0 15px 30px 0 rgba(0,0,0,.1);
+		}
+
+		input:focus{
+			outline:none;
+			box-shadow:0 2px 3px 0 rgba(0,0,0,.1) inset,0 2px 7px 0 rgba(0,0,0,.2);
+		}
+		input::-webkit-input-placeholder{color:#fff}
+		#submit,#sure{
+			background:rgb(156,46,12);
+			color:rgb(255,190,170);			
+		}
+		#button{
+			background:rgb(13,127,156);
+			color:rgb(170,238,255);
+			margin-top:5px;
+		}
+		#login{
+			opacity:1;
+			z-index:15;
+		}
+		#Reg{
+			top:16%;
+			opacity:0;
+		}
+		#Reg .move{
+			margin-top:15px;
+		}
+		#sure,#back{
+			width:135px;
+			height:42px;
+			margin-left:1px;
+			margin-top:16px;
+		}
+		#back{
+			background:rgb(13,127,156);
+			color:rgb(170,238,255);
+		}
+		#type{
+			display:none;
+		}
+		.errormsg{
+			position:relative;
+			margin-left:5px;
+			margin-top:-22px;
+			opacity:0;		
+		}
+		.error{
+			opacity:1;	
+			color:red;				
+		}
+		.sure{
+			opacity:1;
+			color:green;
+		}
+		#Reg div{
+			width:370px;
+		}
+body
+	include include/head
+	div#type #{type}
+	div#bg_wrap
+		div
+			img(src="/images/4.jpg" width="100%" height="100%" alt="")
+		div
+			img(src="/images/5.jpg" width="100%" height="100%" alt="")
+		div
+			img(src="/images/6.jpg" width="100%" height="100%" alt="")
+	div#login
+		h3#title(class="move") 用户登录
+		form(action="/load/isUserExit" method="post")
+			input(class="text move" name="username" type="text" placeholder="Username")
+			input(class="text move" name="password" type="password" placeholder="Password")
+			input(type="submit" class="btn move" id="submit" value="登录")
+			input(type="button" class="btn" id="button" value="注册")
+	div#Reg
+		h3#title(class="move") 用户注册
+		form(action="/Reg/addUser" method="post" id="RegForm")
+			div
+				input(type="text" class="text move" placeholder="账号" id="username" name="username")
+				span.errormsg(class="") 
+			div
+				input(type="password" class="text move" placeholder="密码" id="password" name="password")
+				span.errormsg(class="") 
+			div
+				input(type="password" class="text move" placeholder="确认密码" id="passwordSure")
+				span.errormsg 
+			div
+				input(type="text" class="text move" placeholder="昵称" name="nickname")
+				span.errormsg 
+			div
+				input(type="text" class="text move" placeholder="性别" name="sex")
+				span.errormsg 
+			div
+				input(type="text" class="text move" placeholder="年龄" name="age")
+				span.errormsg 
+			div
+				input(type="text" class="text move" placeholder="联系方式" name="tel")
+				span.errormsg 
+			input(type="submit" class="btn move" id="sure" value="注册")
+			input(type="button" class="btn" id="back" value="返回登录")
+	script.
+		//- ()()  iife 匿名函数立即执行  函数自执行体
+		(function(){
+			var timer=null;
+			//- h5最新的元素获取 兼容ie8
+			var oImg=document.querySelectorAll('#bg_wrap div');
+			var len=oImg.length;
+			var index=0;
+			timer=setInterval(function(){
+				oImg[index].style.opacity=0;
+				index++;
+				//- 求模取余
+				index%=3; 
+				oImg[index].style.opacity=1;
+
+			},3000);
+
+			console.log($("#type").html())
+			if($("#type").html() == 1){
+				load();
+			}else if($("#type").html() == 2){
+				Reg();				
+			}
+
+		})()
+
+		$("#back").click(function(){
+			load();
+		});
+
+		$("#button").click(function(){
+			Reg();
+		});
+
+		function load(){
+			$("#Reg").animate({
+				"opacity":"0",
+				"z-index":"10"
+			},500)
+			$("#login").animate({
+				"opacity":"1",
+				"z-index":"15"				
+			},500)			
+		}
+		function Reg(){
+			$("#Reg").animate({
+				"opacity":"1",
+				"z-index":"15"
+			},500)
+			$("#login").animate({
+				"opacity":"0",
+				"z-index":"10"				
+			},500)			
+		}
+
+
+		//- 表单验证
+		//- username ajax 异步
+
+		//- 所有的的其他表单都不能 为空
+		var isSure=true;
+		$(".text").blur(function(){
+			if($(this).val() == ""){
+				$(this).next().addClass("error").html("不能为空").removeClass("sure");
+				isSure=false;
+			}else{
+				$(this).next().addClass("sure").html("").removeClass("error");
+				isSure=true;
+			}
+		});
+
+		$("#passwordSure").blur(function(){
+			if($(this).val()!=$("#password").val() || $(this).val()==""){
+				var error="";
+				if($(this).val()!=$("#password").val()){error="两次密码不同"}
+				else{error="不能为空";}
+				$(this).next().addClass("error").html(error).removeClass("sure");
+				isSure=false;	
+			}else{
+				$(this).next().addClass("sure").html("").removeClass("error");
+				isSure=true;					
+			}
+		});
+		$("#RegForm").submit(function(){
+			if(isSure){
+				return true;
+			}else{
+				alert("请正确填写");
+				return false;
+			}
+		});
+
+
+		//- 用户名检测是否存在
+		$("#username").blur(function(){
+			var username=$(this).val();
+			if($(this).val() == ""){
+				$("#username").next().addClass("error").html("不能为空").removeClass("sure");
+			}else{
+				$.ajax({
+			         
+			         type: "get",
+			         url: "/Reg/isUsernameExist",    //这是传输到哪个地方进行处理
+			         contentType: "application/json; charset=utf-8",   //传输方式
+			         data:{
+							"username":username
+						},  //这是传输的参数
+			         dataType: "json",   //传输的格式是json
+			         success: function (data) {    //成功后的回调函数
+			         	 console.log(data.isExit);
+			    		if(data.isExit == 0){
+							$("#username").next().addClass("sure").html("").removeClass("error");
+							isSure=true;
+			    		}else{
+			    			$("#username").next().addClass("error").html("账号存在").removeClass("sure");
+			    			isSure=false;
+			    		}
+
+			         },
+			         error: function (err) {
+			             alert("错误");
+			         }
+
+			     });			
+			}
+
+
+
+		})
+
+		
+
+	

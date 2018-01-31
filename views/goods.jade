@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+html(lang="en")
+head
+	meta(charset="UTF-8")
+	title YA.商品
+	style.
+		.sorry{
+			text-align:center;
+			font-size:18px;
+			color:grey;
+			line-height:40px;
+		}
+		.goods_show{
+			width:100%;
+			height:600px;
+			position:relative;
+		}
+		.goods_show .type{
+			width:80%;
+			height:40px;
+			margin:0 auto;
+			border-bottom:2px solid rgb(140,140,140);
+		}
+		.goods_show .type ul li{
+			float:left;
+			list-style:none;
+			width:60px;
+			height:40px;
+			font-size:16px;
+			cursor:pointer;
+			text-align:center;
+			line-height:40px;
+		}
+		.goods_show .type ul li:hover{
+			border-bottom:2px solid black;			
+		}
+		.goods_show .type ul li.show{
+			border-bottom:3px solid red;
+		}
+		.goods_show .goods{
+			width:80%;
+			height:500px;
+			margin:10px auto;
+		}
+		.goods_show .goods ul li{
+			float:left;
+			list-style:none;
+			width:24%;
+			height:200px;
+			border: 1px solid rgb(240,240,240);
+			margin-top:3%;
+			margin-left:0.8%;
+			cursor:pointer;
+			transition:0.5s;
+		}
+		.goods_show .goods ul li:hover{
+			box-shadow:0 0 15px rgb(200,200,200);
+		}
+		.goods_show .goods ul li img{
+			float:left;
+			width:50%;
+			height:150px;
+			margin-top:25px;
+			margin-left:1%;
+		}
+		.goods_show .goods ul li .goodsMsg{
+			float:left;
+			margin-left:10%;
+			margin-top:25px;
+		}
+		.goods_show .goods ul li .goodsMsg .goods_name{
+			font-size:15px;
+			font-family:"微软雅黑";
+			margin-top:10px;
+		}
+		.goods_show .goods ul li .goodsMsg .goods_msg{
+			margin-top:20px;
+		}
+		.goods_show .goods ul li .goodsMsg .goods_price{
+			font-size:25px;
+			color:red;
+			margin-top:30px;
+		}
+		#BuyTheGoods{
+			position:absolute;
+			top:10%;
+			left:40%;
+			width:300px;
+			height:400px;
+			border:1px solid #fff;
+			background:rgb(240,240,240);
+			box-shadow:0 0 15px rgb(200,200,200);
+			display:none;
+		}
+		#BuyTheGoods img.shop_img{
+			width:80%;
+			height:200px;
+			margin-top:5%;
+			margin-left:10%;
+		}
+		#BuyTheGoods div{
+			font-size:18px;
+			text-align:center;
+			margin-top:10px;
+		}
+		#BuyTheGoods div.shop_price{
+			color:red;
+		}
+		#buybtn{
+			width:150px;
+			height:50px;
+			border:1px solid #fff;
+			background:red;
+			border-radius:6px;
+			line-height:50px;
+			color:#fff;
+			margin:0 auto;
+			cursor:pointer;
+		}
+		#close{
+			position:absolute;
+			width:35px;
+			height:35px;
+			top:-13px;
+			right:-4px;
+			cursor:pointer;
+		}
+		#close img{
+			width:100%;
+			height:auto;
+		}
+		#goodstype{
+			display:none;
+		}
+body
+	include include/head
+	div#goodstype #{type}
+	div.goods_show
+		div.type
+			ul
+				li.show(goods_type="pen") 笔
+				li(goods_type="noteBook") 本
+				li(goods_type="other") 其他
+			div.sorry (本店是新开张的店 商品不全 请谅解^_^)
+		div.goods
+			ul
+		div#BuyTheGoods(goods-id="")
+			img.shop_img(src="")
+			div.shop_name
+			div.shop_msg
+			div.shop_price
+			div#buybtn 加入购物车
+			div#close
+				img(src="/images/close.png")
+script.
+	 $(".goods_show .goods ul").on("click", "li", function (event){
+	    var id=$(this).attr("goods_id");
+	 	var src=$(this).find("img").attr("src");
+	 	var name=$(this).find(".goods_name").text();
+	 	var msg=$(this).find(".goods_msg").html();
+	 	var price=$(this).find(".goods_price").html();
+	 	$("#BuyTheGoods").attr("goods_id",id);
+	 	$("#BuyTheGoods").css({
+	 		"display":"block"
+	 	});
+	 	$("#BuyTheGoods").find(".shop_img").attr("src",src);
+	 	$("#BuyTheGoods").find(".shop_name").html(name);
+	 	$("#BuyTheGoods").find(".shop_msg").html(msg);
+	 	$("#BuyTheGoods").find(".shop_price").html(price);
+	 });
+	 $("#close").click(function(){
+	 	$("#BuyTheGoods").css({
+	 		"display":"none"
+	 	});	 	
+	 });
+	 function ajaxToType(a) {
+	     $(".goods_show .goods ul").html("");
+	     $.ajax({
+	         
+	         type: "Get",
+	         url: "/goods/search_type",    //这是传输到哪个地方进行处理
+	         contentType: "application/json; charset=utf-8",   //传输方式
+	         data: {'type':a},  //这是传输的参数
+	         dataType: "json",   //传输的格式是json
+	         success: function (data) {    //成功后的回调函数
+	             //- console.log(data);  
+	             var json = data.goods; //解析JSON$.parseJSON(data.goods); 
+	             var show = "";
+	             $.each(json, function (index, item) { //循环获取数据   
+	             	 var id=json[index].goods_id;
+	                 var img = json[index].goods_img;
+	                 //- console.log(img); 
+	                 var name = json[index].goods_name;
+	                 var msg = json[index].goods_msg;
+	                 var price = json[index].goods_price;	                 
+	                 //console.log(sex + ":" + level + ":" + SongName + ":" + songpath);
+	                 show += "<li goods_id="+id+"><img src='"+img+"'/><div class='goodsMsg'><div class='goods_name'>"+name+"</div><div class='goods_msg'>"+msg+"</div><div class='goods_price'>￥"+price+"</div></div></li>";  //将数据写入到页面中
+	             });
+	             $(".goods_show .goods ul").html(show);
+	         },
+	         error: function (err) {
+	             alert("错误信息");
+	         }
+
+	     });
+	 }
+
+	 $(document).ready(function(){
+	 	var goodstype=$("#goodstype").html();
+	 	if(goodstype ==""){ajaxToType("pen");}
+	 	else{
+	 		for(var i=0;i<3;i++){
+	 			if( $(".goods_show .type ul li").eq(i).attr("goods_type") ==goodstype){
+	 				ajaxToType(goodstype);
+	 				$(".goods_show .type ul li").eq(i).addClass("show").siblings().removeClass("show");
+	 			}
+	 		}
+	 	}
+	 });
+	 $(".goods_show .type ul li").click(function(){
+	 	var type=$(this).attr("goods_type");
+	 	ajaxToType(type);
+	 	$(this).addClass("show").siblings().removeClass("show");
+	 });
+
+	//- 加入购物车的异步操作
+	$("#buybtn").click(function(){
+		var goods_id=$("#BuyTheGoods").attr("goods_id");
+		//- console.log(goods_id);
+		if($("#user_username").html()!="欢迎"){
+		     $.ajax({
+		         
+		         type: "get",
+		         url: "/goods/addToShopCar",    //这是传输到哪个地方进行处理
+		         contentType: "application/json; charset=utf-8",   //传输方式
+		         data: {'goods_id':goods_id},  //这是传输的参数
+		         dataType: "json",   //传输的格式是json
+		         success: function (data) {    //成功后的回调函数
+		             //- console.log(data);  
+		             var error = data.error; //解析JSON$.parseJSON(data.goods); 
+					 if(error==0){
+					 	alert("添加成功");
+					 	$("#BuyTheGoods").css({
+					 		"display":"none"
+					 	});	
+					 }else if(error==1){
+					 	alert("添加失败");
+					 }
+		         },
+		         error: function (err) {
+		             alert("错误信息");
+		         }
+
+		     });		
+		}else{
+			alert("请先登录");
+			window.location.href='/load';
+	 	}
+		
+	})
